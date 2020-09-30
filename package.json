@@ -1,0 +1,23 @@
+{
+  "name": "traffictime-api",
+  "version": "1.0.0",
+  "description": "API for TrafficTime",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ionut98/TrafficTime-API.git"
+  },
+  "author": "Ionut C. Mihoci",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ionut98/TrafficTime-API/issues"
+  },
+  "homepage": "https://github.com/ionut98/TrafficTime-API#readme"
+}
