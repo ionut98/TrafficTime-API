@@ -25,7 +25,7 @@ app.use(
 
 app.use(cors());
 
-app.get('/', (req, res) => {
+app.get('/all', (req, res) => {
   console.log('a client from: ', req.connection.remoteAddress);
 });
 
