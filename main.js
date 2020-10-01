@@ -1,14 +1,27 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const https = require('https');
 
-const app = express();
+const {
+  config,
+  ENV,
+} = require('./config.js');
 
 const {
   PORT,
   sslOptions,
-} = require('./config.js');
+} = config[ENV]; 
+
+const servers = {
+  'dev': require('http'),
+  'prod': require('https'),
+};
+
+const {
+  connectToDB,
+} = require('./db/index');
+
+const app = express();
 
 app.use(
   bodyParser.urlencoded({
@@ -25,11 +38,13 @@ app.use(
 
 app.use(cors());
 
-app.get('/all', (req, res) => {
+app.get('/', (req, res) => {
+  connectToDB();
   console.log('a client from: ', req.connection.remoteAddress);
+  res.send('<i>ciao ragazzi</i>')
 });
 
-const webServer = https.createServer(sslOptions, app);
+const webServer = servers[ENV].createServer(sslOptions, app);
 webServer.listen(PORT, () => {
   console.log(`--------------`);
   console.log(`The server is listening! at ${PORT}`);
