@@ -14,9 +14,6 @@ const connectToDB = async () => {
   try {
     await client.connect();
 
-    const result = await client.db().admin().listDatabases();
-    console.log(result);
-
   } catch (error) {
     console.log(error);
 

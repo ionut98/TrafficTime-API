@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const MongoClient = require('mongodb').MongoClient;
 
 const {
   config,
@@ -10,16 +11,13 @@ const {
 const {
   PORT,
   sslOptions,
+  dbConnString,
 } = config[ENV]; 
 
 const servers = {
   'dev': require('http'),
   'prod': require('https'),
 };
-
-const {
-  connectToDB,
-} = require('./db/index');
 
 const app = express();
 
@@ -38,11 +36,25 @@ app.use(
 
 app.use(cors());
 
-app.get('/', (req, res) => {
-  connectToDB();
-  console.log('a client from: ', req.connection.remoteAddress);
-  res.send('<i>ciao ragazzi</i>')
-});
+MongoClient.connect(dbConnString, { useUnifiedTopology: true, }, 
+  (err, client) => {
+    
+    if (err) {
+      return console.error(err);
+    }
+    console.log('Connected to TrafficAPI DB!');
+    
+    const db = client.db('traffictime');
+    const collection = db.collection('traffictime');
+    
+    app.get('/all-records', async (req, res) => {
+      const records = await collection.find({}).toArray();
+      res.send(records);
+    });
+  
+  }
+);
+
 
 const webServer = servers[ENV].createServer(sslOptions, app);
 webServer.listen(PORT, () => {
