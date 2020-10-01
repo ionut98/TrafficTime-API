@@ -1,13 +1,21 @@
 const fs = require('fs');
 
-const PORT = 60802;
-
-const sslOptions = {
-  cert: fs.readFileSync(`${__dirname}/ssl/fullchain1.pem`),
-  key: fs.readFileSync(`${__dirname}/ssl/privkey1.pem`),
+const ENV = 'dev';
+const config = {
+  dev: {
+    PORT: 60802,
+    sslOptions: null,
+  },
+  prod: {
+    PORT: 60802,
+    sslOptions: {
+      cert: ENV === 'prod' ? fs.readFileSync(`../ssl/fullchain1.pem`) : null,
+      key: ENV === 'prod' ? fs.readFileSync(`../ssl/privkey1.pem`) : null,
+    },
+  },
 };
 
 module.exports = {
-  PORT,
-  sslOptions,
-}
+  config,
+  ENV,
+};
