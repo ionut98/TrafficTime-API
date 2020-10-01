@@ -1,10 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const https = require('https');
 
 const app = express();
 
-const port = 60802;
+const {
+  PORT,
+  sslOptions,
+} = require('./config.js');
 
 app.use(
   bodyParser.urlencoded({
@@ -21,8 +25,13 @@ app.use(
 
 app.use(cors());
 
-app.listen(port, () => {
+app.get('/', (req, res) => {
+  console.log('a client from: ', req.connection.remoteAddress);
+});
+
+const webServer = https.createServer(sslOptions, app);
+webServer.listen(PORT, () => {
   console.log(`--------------`);
-  console.log(`The server is listening! at ${port}`);
+  console.log(`The server is listening! at ${PORT}`);
   console.log(`--------------`);
 });
