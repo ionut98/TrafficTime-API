@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const ENV = 'dev';
+const ENV = 'prod';
 const config = {
   dev: {
     PORT: 60802,
