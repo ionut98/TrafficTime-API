@@ -47,11 +47,32 @@ MongoClient.connect(dbConnString, { useUnifiedTopology: true, },
     const db = client.db('traffictime');
     const collection = db.collection('traffictime');
     
-    app.get('/all-records', async (req, res) => {
+    app.get('/times', async (req, res) => {
       const records = await collection.find({}).toArray();
       res.send(records);
     });
-  
+    
+    app.post('/time', async (req, res) => {
+      const {
+        body: {
+          record,
+        },
+      } = req;
+
+      try {
+        await collection.insertOne(record);
+        return res.send({
+          success: true,
+        });
+      } catch (error) {
+        console.log(error);
+        return res.send({
+          success: false,
+        });
+      }
+
+    });
+
   }
 );
 
