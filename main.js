@@ -60,9 +60,7 @@ MongoClient.connect(dbConnString, { useUnifiedTopology: true, },
       } = req;
 
       try {
-        await collection.insertOne({
-          record
-        });
+        await collection.insertOne(record);
         return res.send({
           success: true,
         });
